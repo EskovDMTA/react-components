@@ -8,9 +8,9 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-
-    "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "lint1": "prettier --check .",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "react": "^18.2.0",
