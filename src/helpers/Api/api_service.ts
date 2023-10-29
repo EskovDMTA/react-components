@@ -6,6 +6,17 @@ export default class ApiService {
   static async response(pageQuery: string) {
     const queryParams = pageQuery.toLowerCase();
     const response = await axios.get(`${this.url + queryParams}`);
-    return response.data
+    return response;
+  }
+
+  static async getPage(pageQuery: string, limit: number, page: number) {
+    const queryParams = pageQuery.toLowerCase();
+    const response = await axios.get(`${this.url + queryParams}`, {
+      params: {
+        limit: limit,
+        page: page,
+      },
+    });
+    return response;
   }
 }

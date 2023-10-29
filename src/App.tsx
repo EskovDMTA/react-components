@@ -1,43 +1,107 @@
 import './App.css';
 import Content from './components/content/content';
 import SearchBlock from './components/search_block/SearchBlock';
-import {Component} from "react";
+import React, { Component } from 'react';
+import ApiService from './helpers/Api/api_service';
+import { getPagesArray, setPagesCount } from './helpers/pages';
 
-export default class App extends Component{
-    state = {
-        posts: [],
-        isLoading: false,
-        totalPostsCount: 0,
-        totalPagesCount: 0,
-    }
-    postsHandler = (posts) => {
-        this.setState({
-            posts: posts
-        })
-    }
+export default class App extends Component {
+  state = {
+    searchValue: localStorage.getItem('lastSearchValue') || 'people',
+    posts: [],
+    isLoading: false,
+    totalPostsCount: 0,
+    totalPagesCount: 0,
+    limit: 10,
+    currentPage: 1,
+  };
 
-    totalPostsCountHandler = (count: number) => {
-        this.setState({
-            totalPostsCount: count
-        })
-    }
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value;
+    this.setState({
+      searchValue: searchValue,
+    });
+    localStorage.setItem('lastSearchValue', searchValue);
+  };
+  postsHandler = (posts) => {
+    this.setState({
+      posts: posts,
+    });
+  };
+  currentPageHandler = (page: number) => {
+    this.setState({
+      currentPage: page,
+    });
+  };
 
-    totalPagesCountHandler = (count: number) => {
-        this.setState({
-            totalPostsCount: count
-        })
-    }
+  totalPostsCountHandler = (count: number) => {
+    this.setState({
+      totalPostsCount: count,
+    });
+  };
 
+  totalPagesCountHandler = (count: number, limit: number) => {
+    this.setState({
+      totalPagesCount: setPagesCount(count, limit),
+    });
+  };
 
-    isLoadingHandler = (isLoading:boolean) => {
-        this.setState({isLoading})
+  isLoadingHandler = (isLoading: boolean) => {
+    this.setState({ isLoading });
+  };
+
+  setCurrentPage = async (currentPage: number) => {
+    this.isLoadingHandler(true);
+    this.setState({ currentPage });
+    const response = await ApiService.getPage(
+      this.state.searchValue,
+      this.state.limit,
+      currentPage
+    );
+    console.log(response.data);
+    this.postsHandler(response.data.results);
+    localStorage.setItem('lastSearchPage', currentPage.toString());
+    this.totalPagesCountHandler(response.data.count, this.state.limit);
+    this.isLoadingHandler(false);
+  };
+
+  fetchPostsHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    this.isLoadingHandler(true);
+    const response = await ApiService.response(this.state.searchValue);
+    this.postsHandler(response.data.results);
+    console.log(response);
+    this.totalPagesCountHandler(response.data.count, this.state.limit);
+    this.isLoadingHandler(false);
+  };
+
+  componentDidMount() {
+    const lastSearchValue = localStorage.getItem('lastSearchValue');
+    if (lastSearchValue) {
+      this.setState({ searchValue: lastSearchValue });
     }
-    render() {
-        return (
-            <div className={""}>
-                <SearchBlock isLoadingHandler={this.isLoadingHandler} postsHandlerChange={this.postsHandler}/>
-                <Content isLoading={this.state.isLoading} posts={this.state.posts}/>
-            </div>
-        );
-    }
+    this.setCurrentPage(this.state.currentPage);
+  }
+
+  render() {
+    const pagesArray = getPagesArray(this.state.totalPagesCount);
+    return (
+      <div className={''}>
+        <SearchBlock
+          searchValue={this.state.searchValue}
+          postsHandlerChange={this.postsHandler}
+          handleInputChange={this.handleInputChange}
+          fetchPostsHandler={this.fetchPostsHandler}
+        />
+        <Content
+          isLoading={this.state.isLoading}
+          posts={this.state.posts}
+          pagesTotalCount={this.state.totalPagesCount}
+          pagesArray={pagesArray}
+          currentPage={this.state.currentPage}
+          setCurrentPage={this.setCurrentPage}
+        />
+      </div>
+    );
+  }
 }

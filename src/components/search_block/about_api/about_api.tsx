@@ -3,7 +3,6 @@ import './style.css';
 
 export default class AboutApi extends Component {
   apiBlock = [
-    'films/ The URL root for Film resources',
     'people/ The URL root for People resources',
     'planets/ The URL root for Planet resources',
     'species/ The URL root for Species resources',
@@ -21,9 +20,6 @@ export default class AboutApi extends Component {
             </li>
           ))}
         </ul>
-        <p>
-          Full search params <a href="https://swapi.dev/documentation">link</a>
-        </p>
       </div>
     );
   }
