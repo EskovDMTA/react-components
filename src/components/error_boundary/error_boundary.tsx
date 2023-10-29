@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   render() {
     if (this.state.hasError) {
-      return <div>Что то случилось...</div>;
+      return <div>Shit happens...</div>;
     }
     return this.props.children;
   }

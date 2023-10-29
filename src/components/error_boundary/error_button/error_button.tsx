@@ -3,13 +3,13 @@ import './style.css';
 
 class ErrorThrowerButton extends Component {
   handleClick = () => {
-    throw new Error('Ошибка, вызванная нажатием кнопки');
+    throw new Error('Error throw button push');
   };
 
   render() {
     return (
       <button className={'error_button'} onClick={this.handleClick}>
-        Вызвать ошибку
+        Throw error
       </button>
     );
   }
