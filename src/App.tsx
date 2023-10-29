@@ -37,7 +37,7 @@ export default class App extends Component<IApp> {
   };
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const searchValue = e.target.value;
+    const searchValue = e.target.value.trim();
     this.setState({
       searchValue,
     });
