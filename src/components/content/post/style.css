@@ -1,0 +1,14 @@
+.post_wrapper{
+  width: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+  transition: all 0.2s linear;
+}
+.post_title{
+  font-size: 22px;
+}
+
+.post_wrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
