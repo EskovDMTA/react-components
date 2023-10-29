@@ -14,7 +14,9 @@ export default class Pagination extends Component<IPagination> {
         {this.props.pagesArray.map((e) => (
           <div
             key={e}
-            onClick={() => this.props.setCurrentPage(e)}
+            onClick={() => {
+              this.props.setCurrentPage(e);
+            }}
             className={
               this.props.currentPage === e
                 ? 'pagination_button pagination_button_active'

@@ -5,8 +5,6 @@ import AboutApi from './about_api/about_api';
 
 interface SearchBlockInterface {
   searchValue: string;
-  postsHandlerChange: (posts) => void;
-  isLoadingHandler: (value: boolean) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fetchPostsHandler: (e: React.FormEvent<HTMLFormElement>) => void;
 }
@@ -17,13 +15,12 @@ export default class SearchBlock extends Component<SearchBlockInterface> {
       fetchPostsHandler,
       searchValue,
       handleInputChange,
-      postsHandlerChange,
+      // postsHandlerChange,
     } = this.props;
     return (
       <div className="search_block">
         <SearchForms
           searchValue={searchValue}
-          postsHandlerChange={postsHandlerChange}
           handleInputChange={handleInputChange}
           fetchPostsHandler={fetchPostsHandler}
         />

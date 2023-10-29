@@ -3,7 +3,7 @@ export function setPagesCount(totalPostsCount: number, limit: number) {
 }
 
 export const getPagesArray = (pagesCount: number) => {
-  let result = [];
+  const result = [];
   for (let i = 1; i <= pagesCount; i++) {
     result.push(i);
   }

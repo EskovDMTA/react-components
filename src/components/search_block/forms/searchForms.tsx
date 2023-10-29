@@ -14,7 +14,12 @@ export default class SearchForms extends Component<SearchFormsInterface> {
   render() {
     const { searchValue, fetchPostsHandler, handleInputChange } = this.props;
     return (
-      <form className="form_search" onSubmit={(e) => fetchPostsHandler(e)}>
+      <form
+        className="form_search"
+        onSubmit={(e) => {
+          fetchPostsHandler(e);
+        }}
+      >
         <ApiUrl />
         <InputSearch searchValue={searchValue} onChange={handleInputChange} />
         <SearchButton />

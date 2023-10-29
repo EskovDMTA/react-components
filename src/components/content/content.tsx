@@ -1,13 +1,17 @@
-import { Component } from 'react';
-import React from 'react';
+import React, { Component } from 'react';
 import Pagination from './pagination/pagination';
 import Post from './post/post';
 import Spinner from './spiner/spinner';
 import './style.css';
 import GiphyComponent from './giphy_component/giphyStarWars';
 
+interface IPost {
+  name: string;
+  created: string;
+}
+
 interface IContent {
-  posts: {}[];
+  posts: IPost[];
   isLoading: boolean;
   pagesTotalCount: number;
   pagesArray: number[];

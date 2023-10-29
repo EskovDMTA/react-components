@@ -13,8 +13,8 @@ export default class ApiService {
     const queryParams = pageQuery.toLowerCase();
     const response = await axios.get(`${this.url + queryParams}`, {
       params: {
-        limit: limit,
-        page: page,
+        limit,
+        page,
       },
     });
     return response;

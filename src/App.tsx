@@ -5,7 +5,11 @@ import React, { Component } from 'react';
 import ApiService from './helpers/Api/api_service';
 import { getPagesArray, setPagesCount } from './helpers/pages';
 
-export default class App extends Component {
+interface IApp {
+  handleInputChange: () => void;
+}
+
+export default class App extends Component<IApp> {
   state = {
     searchValue: localStorage.getItem('lastSearchValue') || 'people',
     posts: [],
@@ -16,37 +20,39 @@ export default class App extends Component {
     currentPage: 1,
   };
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const searchValue = e.target.value;
     this.setState({
-      searchValue: searchValue,
+      searchValue,
     });
     localStorage.setItem('lastSearchValue', searchValue);
   };
-  postsHandler = (posts) => {
+
+  postsHandler = (posts: []): void => {
     this.setState({
-      posts: posts,
-    });
-  };
-  currentPageHandler = (page: number) => {
-    this.setState({
-      currentPage: page,
+      posts,
     });
   };
 
-  totalPostsCountHandler = (count: number) => {
-    this.setState({
-      totalPostsCount: count,
-    });
-  };
+  // currentPageHandler = (page: number) => {
+  //   this.setState({
+  //     currentPage: page
+  //   })
+  // }
 
-  totalPagesCountHandler = (count: number, limit: number) => {
+  // totalPostsCountHandler = (count: number) => {
+  //   this.setState({
+  //     totalPostsCount: count
+  //   })
+  // }
+
+  totalPagesCountHandler = (count: number, limit: number): void => {
     this.setState({
       totalPagesCount: setPagesCount(count, limit),
     });
   };
 
-  isLoadingHandler = (isLoading: boolean) => {
+  isLoadingHandler = (isLoading: boolean): void => {
     this.setState({ isLoading });
   };
 
@@ -89,7 +95,6 @@ export default class App extends Component {
       <div className={''}>
         <SearchBlock
           searchValue={this.state.searchValue}
-          postsHandlerChange={this.postsHandler}
           handleInputChange={this.handleInputChange}
           fetchPostsHandler={this.fetchPostsHandler}
         />
