@@ -7,11 +7,7 @@ import { getPagesArray, setPagesCount } from './helpers/pages';
 import ErrorBoundary from './components/error_boundary/error_boundary';
 import ErrorThrowerButton from './components/error_boundary/error_button/error_button';
 
-interface IApp {
-  handleInputChange: () => void;
-}
-
-export default class App extends Component<IApp> {
+export default class App extends Component {
   state = {
     searchValue: localStorage.getItem('lastSearchValue') || 'people',
     posts: [],
