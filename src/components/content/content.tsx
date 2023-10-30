@@ -3,7 +3,6 @@ import Pagination from './pagination/pagination';
 import Post from './post/post';
 import Spinner from './spiner/spinner';
 import './style.css';
-import GiphyComponent from './giphy_component/giphyStarWars';
 
 interface IPost {
   name: string;
@@ -23,7 +22,6 @@ export default class Content extends Component<IContent> {
   render() {
     return (
       <div className={'content_wrapper'}>
-        <GiphyComponent />
         {this.props.isLoading ? (
           <Spinner />
         ) : this.props.posts.length === 0 ? (
