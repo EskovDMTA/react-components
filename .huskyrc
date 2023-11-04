@@ -1,5 +1,5 @@
 {
   "hooks": {
-    "pre-commit": "lint1"
+    "pre-commit": "lint"
   }
 }
