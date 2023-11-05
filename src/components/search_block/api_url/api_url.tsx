@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import React from 'react';
 import './style.css';
-export default class ApiUrl extends Component {
-  render() {
-    return <div className={'api_block'}>https://swapi.dev/api/</div>;
-  }
-}
+
+const ApiUrl: React.FC = () => {
+  return <div className={'api_block'}>https://swapi.dev/api/</div>;
+};
+
+export default ApiUrl;

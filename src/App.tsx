@@ -1,99 +1,86 @@
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Content from './components/content/content';
 import SearchBlock from './components/search_block/SearchBlock';
-import React, { Component } from 'react';
 import ApiService from './helpers/Api/api_service';
 import { getPagesArray, setPagesCount } from './helpers/pages';
 import ErrorBoundary from './components/error_boundary/error_boundary';
 import ErrorThrowerButton from './components/error_boundary/error_button/error_button';
 
-export default class App extends Component {
-  state = {
-    searchValue: localStorage.getItem('lastSearchValue') || 'people',
-    posts: [],
-    isLoading: false,
-    totalPostsCount: 0,
-    totalPagesCount: 0,
-    limit: 10,
-    currentPage: 1,
+const App = () => {
+  const [searchValue, setSearchValue] = useState(
+    localStorage.getItem('lastSearchValue') || 'people'
+  );
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalPagesCount, setTotalPagesCount] = useState(0);
+  const limit = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+
+  const handleInputChange = (e) => {
+    const value = e.target.value.trim();
+    setSearchValue(value);
+    localStorage.setItem('lastSearchValue', value);
   };
 
-  setCurrentPage = async (currentPage: number) => {
-    this.isLoadingHandler(true);
-    this.setState({ currentPage });
-    const response = await ApiService.getPage(
-      this.state.searchValue,
-      this.state.limit,
-      currentPage
-    );
-    this.postsHandler(response.data.results);
-    localStorage.setItem('lastSearchPage', currentPage.toString());
-    this.totalPagesCountHandler(response.data.count, this.state.limit);
-    this.isLoadingHandler(false);
+  const postsHandler = (posts) => {
+    setPosts(posts);
   };
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const searchValue = e.target.value.trim();
-    this.setState({
-      searchValue,
-    });
-    localStorage.setItem('lastSearchValue', searchValue);
+  const totalPagesCountHandler = (count, limit) => {
+    setTotalPagesCount(setPagesCount(count, limit));
   };
 
-  postsHandler = (posts: []): void => {
-    this.setState({
-      posts,
-    });
+  const setCurrentPageHandler = async (page) => {
+    setIsLoading(true);
+    setCurrentPage(page);
+    const response = await ApiService.getPage(searchValue, limit, page);
+    postsHandler(response.data.results);
+    localStorage.setItem('lastSearchPage', page.toString());
+    totalPagesCountHandler(response.data.count, limit);
+    setIsLoading(false);
   };
 
-  totalPagesCountHandler = (count: number, limit: number): void => {
-    this.setState({
-      totalPagesCount: setPagesCount(count, limit),
-    });
-  };
-
-  isLoadingHandler = (isLoading: boolean): void => {
-    this.setState({ isLoading });
-  };
-
-  fetchPostsHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const fetchPostsHandler = async (e) => {
     e.preventDefault();
-    this.isLoadingHandler(true);
-    const response = await ApiService.response(this.state.searchValue);
-    this.postsHandler(response.data.results);
-    this.totalPagesCountHandler(response.data.count, this.state.limit);
-    this.isLoadingHandler(false);
+    setIsLoading(true);
+    const response = await ApiService.response(searchValue);
+    postsHandler(response.data.results);
+    totalPagesCountHandler(response.data.count, limit);
+    setIsLoading(false);
   };
 
-  componentDidMount() {
+  useEffect(() => {
     const lastSearchValue = localStorage.getItem('lastSearchValue');
     if (lastSearchValue) {
-      this.setState({ searchValue: lastSearchValue });
+      setSearchValue(lastSearchValue);
     }
-    this.setCurrentPage(this.state.currentPage);
-  }
+    setCurrentPageHandler(currentPage);
+  }, [currentPage]);
 
-  render() {
-    const pagesArray = getPagesArray(this.state.totalPagesCount);
-    return (
-      <div className={''}>
-        <ErrorBoundary>
-          <SearchBlock
-            searchValue={this.state.searchValue}
-            handleInputChange={this.handleInputChange}
-            fetchPostsHandler={this.fetchPostsHandler}
-          />
-          <ErrorThrowerButton />
-          <Content
-            isLoading={this.state.isLoading}
-            posts={this.state.posts}
-            pagesTotalCount={this.state.totalPagesCount}
-            pagesArray={pagesArray}
-            currentPage={this.state.currentPage}
-            setCurrentPage={this.setCurrentPage}
-          />
-        </ErrorBoundary>
-      </div>
-    );
-  }
-}
+  const pagesArray = getPagesArray(totalPagesCount);
+
+  return (
+    <div className={''}>
+      <ErrorBoundary>
+        <SearchBlock
+          searchValue={searchValue}
+          handleInputChange={handleInputChange}
+          fetchPostsHandler={fetchPostsHandler}
+        />
+        <ErrorThrowerButton />
+        <Content
+          isLoading={isLoading}
+          posts={posts}
+          pagesArray={pagesArray}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPageHandler}
+        />
+      </ErrorBoundary>
+    </div>
+  );
+};
+
+export default App;

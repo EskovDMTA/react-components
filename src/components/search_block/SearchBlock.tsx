@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import SearchForms from './forms/searchForms';
 import './style.css';
 import AboutApi from './about_api/about_api';
@@ -9,23 +9,20 @@ interface SearchBlockInterface {
   fetchPostsHandler: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export default class SearchBlock extends Component<SearchBlockInterface> {
-  render() {
-    const {
-      fetchPostsHandler,
-      searchValue,
-      handleInputChange,
-      // postsHandlerChange,
-    } = this.props;
-    return (
-      <div className="search_block">
-        <SearchForms
-          searchValue={searchValue}
-          handleInputChange={handleInputChange}
-          fetchPostsHandler={fetchPostsHandler}
-        />
-        <AboutApi />
-      </div>
-    );
-  }
-}
+const SearchBlock: React.FC<SearchBlockInterface> = ({
+  fetchPostsHandler,
+  searchValue,
+  handleInputChange,
+}) => {
+  return (
+    <div className="search_block">
+      <SearchForms
+        searchValue={searchValue}
+        handleInputChange={handleInputChange}
+        fetchPostsHandler={fetchPostsHandler}
+      />
+      <AboutApi />
+    </div>
+  );
+};
+export default SearchBlock;

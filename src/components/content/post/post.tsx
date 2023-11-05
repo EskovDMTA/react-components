@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import './style.css';
 
 interface IPost {
@@ -6,14 +6,12 @@ interface IPost {
   description: string;
 }
 
-export default class Post extends Component<IPost> {
-  render() {
-    const { name, description } = this.props;
-    return (
-      <div className={'post_wrapper'}>
-        <div className={'post_title'}>Name: {name}</div>
-        <div className={'post_description'}>Date: {description}</div>
-      </div>
-    );
-  }
-}
+const Post: React.FC<IPost> = ({ name, description }) => {
+  return (
+    <div className={'post_wrapper'}>
+      <div className={'post_title'}>Name: {name}</div>
+      <div className={'post_description'}>Date: {description}</div>
+    </div>
+  );
+};
+export default Post;

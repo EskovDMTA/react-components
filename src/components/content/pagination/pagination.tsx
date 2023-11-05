@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import './style.css';
 
 interface IPagination {
@@ -7,26 +7,29 @@ interface IPagination {
   setCurrentPage: (currentPage: number) => void;
 }
 
-export default class Pagination extends Component<IPagination> {
-  render() {
-    return (
-      <div className={'pagination__wrapper'}>
-        {this.props.pagesArray.map((e) => (
-          <div
-            key={e}
-            onClick={() => {
-              this.props.setCurrentPage(e);
-            }}
-            className={
-              this.props.currentPage === e
-                ? 'pagination_button pagination_button_active'
-                : 'pagination_button'
-            }
-          >
-            {e}
-          </div>
-        ))}
-      </div>
-    );
-  }
-}
+const Pagination: React.FC<IPagination> = ({
+  pagesArray,
+  currentPage,
+  setCurrentPage,
+}) => {
+  return (
+    <div className={'pagination__wrapper'}>
+      {pagesArray.map((e) => (
+        <div
+          key={e}
+          onClick={() => {
+            setCurrentPage(e);
+          }}
+          className={
+            currentPage === e
+              ? 'pagination_button pagination_button_active'
+              : 'pagination_button'
+          }
+        >
+          {e}
+        </div>
+      ))}
+    </div>
+  );
+};
+export default Pagination;
