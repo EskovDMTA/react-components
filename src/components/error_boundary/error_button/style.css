@@ -1,0 +1,9 @@
+.error_button {
+  margin-bottom: 15px;
+  background-color: rgba(255, 0, 0, 0.54);
+  font-size: 16px;
+  transition: all 0.2s linear;
+}
+.error_button:hover {
+  transform: scale(1.1);
+}
